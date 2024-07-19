@@ -1,14 +1,31 @@
 import React, { useState } from "react";
 import { MdClose } from "react-icons/md";
+import axiosInstance from "../../utils/axiosInstance";
 
-const AddEditNotes = ({ noteData, Type, onClose, }) => {
+const AddEditNotes = ({ noteData, Type, getAllTasks, onClose}) => {
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
     const [error, setError] = useState(null);
 
-    // Add Note
-    const addNewNote = () => {
 
+    // Add Note
+    const addNewNote = async () => {
+        try {
+            const response = await axiosInstance.post("/api/v1/auth/add-notes", {
+                title,
+                content,
+            });
+
+            if(response.data && response.data.note) {
+                getAllTasks()
+                onClose()
+            }
+
+        } catch (error) {
+            if(error.response && error.response.data && error.response.data.message) {
+                setError(error.response.data.message)
+            }
+        }
     }
 
     // Edit Tasks
@@ -70,6 +87,7 @@ const AddEditNotes = ({ noteData, Type, onClose, }) => {
             <button
                 className='btn-primary font-medium mt-5 p-3'
                 onClick={handleAddNote}>
+                {/* {Type === 'edit' ? 'UPDATE' : 'ADD'} */}
                 ADD
             </button>
         </div>
