@@ -13,7 +13,7 @@ const ProfileInfo = ({ userInfo, userLogout }) => {
             </div>
             <div>
                 {/* <p className='text-sm font-medium'>Aknandan Sharma</p> */}
-                <button className='text-sm text-slate-700 underline' onClick={userLogout}>
+                <button className='px-4 py-2 border border-blue-500 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75' onClick={userLogout}>
                     Logout
                 </button>
             </div>

@@ -3,9 +3,9 @@ export default function Footer(){
     return (
         <div className="footer-container">
             <div className="footer-section">
-                <p className="title">ResumeBuilder.com</p>
-                <p>ResumeBuilder is a place where you can build your resume in a good format And our service is absolutely free.</p>
-                <p>&copy; 2022-23 | All Rights Reserved</p>
+                <p className="title">Task Management App</p>
+                <p>This is a Task ot to-do management applications you can use free.</p>
+                <p>&copy; 2024-25 | All Rights Reserved</p>
             </div>
             <div className="footer-section">
                 <p className="title">Contact Us</p>

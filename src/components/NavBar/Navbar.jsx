@@ -8,28 +8,31 @@ const Navbar = ({ userInfo }) => {
     const userLogout = () => {
         localStorage.clear();
         navigate("/login");
-    }
+    };
 
     return (
-        <div className="bg-white flex items-center justify-between px-6 py-2 drop-shadow">
-            <h2 className="text-xl font-medium text-black py-2">Task</h2>
+        <div className='bg-white flex items-center justify-between px-6 py-2 drop-shadow-lg'>
+            <Link to='/' className='text-xl font-extrabold text-black py-2'>
+                Task <span className='text-red-600 text-5xl transform rotate-45 '>M</span>
+            </Link>
 
+            {userInfo ? (
+                <ProfileInfo userInfo={userInfo} userLogout={userLogout} />
+            ) : (
+                ""
+            )}
 
-            {userInfo ? <ProfileInfo userInfo={userInfo} userLogout={userLogout} /> : ""}
-
-            {/* <nav>
-                <ul>
-                    <li>
-                        <Link to='/dashboard'>Home</Link>
-                    </li>
-                    <li>
-                        <Link to='/login'>Login</Link>
-                    </li>
-                    <li>
-                        <Link to='/register'>Sign Up</Link>
-                    </li>
-                </ul>
-            </nav> */}
+            {!userInfo ? (
+                <div className='flex flex-row items-end justify-between'>
+                    <Link
+                        to='/register'
+                        className='px-4 py-2 border border-blue-500 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75'>
+                        Sign Up
+                    </Link>
+                </div>
+            ) : (
+                ""
+            )}
         </div>
     );
 };
