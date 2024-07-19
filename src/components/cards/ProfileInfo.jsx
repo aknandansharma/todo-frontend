@@ -1,21 +1,14 @@
 import React from 'react'
 import {getName} from '../../utils/helper'
-import { useNavigate } from "react-router-dom";
 
-const ProfileInfo = () => {
+const ProfileInfo = ({ userInfo, userLogout }) => {
 
-    const navigate = useNavigate();
 
-    const userLogout = () => {
-        navigate("/login");
-    }
-
-    
   return (
     <>
         <div className='flex items-center gap-3'>
             <div className='w-12 h-12 flex items-center justify-center rounded-full text-slate-950 font-medium bg-slate-200'>
-            {getName("Aknandan sharma")}
+            {getName(userInfo?.fullName)}
            
             </div>
             <div>

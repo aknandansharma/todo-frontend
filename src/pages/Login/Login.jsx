@@ -1,13 +1,17 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa6";
 import { validateEmail } from "../../utils/helper";
+import axiosInstance from "../../utils/axiosInstance";
+import { useNavigate } from "react-router-dom";
+import Navbar from '../../components/NavBar/Navbar';
 
 const Login = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState(null);
+    const navigate = useNavigate();
 
     const toggleShowPassword = () => {
         setShowPassword(!showPassword);
@@ -27,9 +31,28 @@ const Login = () => {
         setError("");
 
         // Login API
+        try {
+            const response = await axiosInstance.post("/api/v1/auth/login", {
+                email: email,
+                password: password,
+            });
+
+            if(response.data && response.data.accessToken) {
+                localStorage.setItem("token", response.data.accessToken)
+                navigate("/dashboard")
+            }
+        } catch (error) {
+            if(error.error && error.response.data && error.response.data.message) {
+                setError("An unexpected error occurred. Please try again.")
+            }
+        }
+
+
     };
 
     return (
+        <>
+        <Navbar />
         <div className='flex item-center justify-center mt-28'>
             <div className='w-96 border rounded bg-white px-7 py-10'>
                 <form onSubmit={handleLogin}>
@@ -79,6 +102,7 @@ const Login = () => {
                 </form>
             </div>
         </div>
+    </>
     );
 };
 
