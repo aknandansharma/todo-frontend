@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../utils/axiosInstance";
 import Navbar from "../../components/NavBar/Navbar";
 import EmptyCard from "../../components/EmptyCard/EmptyCard";
+import emptyImage from "../../assets/images/empty to list.gif"
 
 
 const Home = () => {
@@ -119,7 +120,7 @@ const Home = () => {
                     ))}
                 </div>
                 ) : (
-                    <EmptyCard imageSrc={93900} message="thoajdjasdasdkadjasksjdajk" />
+                    <EmptyCard imageSrc={emptyImage} message="Welcome to my Task Management Application. you can start with creating new Tasks simple click the plus icons." />
                 )}
             </div>
 
