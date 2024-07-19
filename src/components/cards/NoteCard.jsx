@@ -13,7 +13,7 @@ const NoteCard = ({title, date, content, isPinned, onEdit, onDelete, onPinNote})
                 <span className='text-xs text-slate-500'>{moment(date).format('Do MM YYYY')}</span>
             </div>
 
-            <MdOutlinePushPin className={`icon-btn ${isPinned ? 'text-blue-900' : 'text-slate-300'} cursor-pointer`}  />
+            <MdOutlinePushPin className={`icon-btn ${isPinned ? 'text-blue-900' : 'text-slate-300'} cursor-pointer`} onClick={onPinNote} />
         </div>
 
         <p className='text-xs text-slate-500 mt-2'>{content?.slice(0, 50)}</p>

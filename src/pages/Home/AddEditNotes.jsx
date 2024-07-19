@@ -3,13 +3,14 @@ import { MdClose } from "react-icons/md";
 import axiosInstance from "../../utils/axiosInstance";
 
 const AddEditNotes = ({ noteData, Type, getAllTasks, onClose}) => {
-    const [title, setTitle] = useState("");
-    const [content, setContent] = useState("");
+    const [title, setTitle] = useState(noteData?.title || "");
+    const [content, setContent] = useState(noteData?.content || "");
     const [error, setError] = useState(null);
 
 
     // Add Note
     const addNewNote = async () => {
+        
         try {
             const response = await axiosInstance.post("/api/v1/auth/add-notes", {
                 title,
@@ -29,11 +30,28 @@ const AddEditNotes = ({ noteData, Type, getAllTasks, onClose}) => {
     }
 
     // Edit Tasks
-    const editNote = () => {
+    const editNote = async () => {
+        const taskId = noteData?._id;
+        try {
+            const response = await axiosInstance.put("/api/v1/auth/update-notes/" + taskId, {
+                title,
+                content,
+            });
 
+            if(response.data && response.data.note) {
+                getAllTasks()
+                onClose()
+            }
+
+        } catch (error) {
+            if(error.response && error.response.data && error.response.data.message) {
+                setError(error.response.data.message)
+            }
+        }
     }
 
     const handleAddNote = () => {
+        console.log(noteData, "note data")
         if(!title) {
             setError("Please Enter The Title.")
             return;
@@ -50,7 +68,6 @@ const AddEditNotes = ({ noteData, Type, getAllTasks, onClose}) => {
             addNewNote();
         }
 
-        // API functions
 
     }
 
@@ -87,8 +104,7 @@ const AddEditNotes = ({ noteData, Type, getAllTasks, onClose}) => {
             <button
                 className='btn-primary font-medium mt-5 p-3'
                 onClick={handleAddNote}>
-                {/* {Type === 'edit' ? 'UPDATE' : 'ADD'} */}
-                ADD
+                {Type === 'edit' ? 'UPDATE' : 'ADD'}
             </button>
         </div>
     );

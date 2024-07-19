@@ -6,15 +6,25 @@ import Modal from "react-modal";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../utils/axiosInstance";
 import Navbar from "../../components/NavBar/Navbar";
+import EmptyCard from "../../components/EmptyCard/EmptyCard";
+
+
 const Home = () => {
     const [openAddEdit, setOpenAddEdit] = useState({
         isShown: false,
         type: "add",
         data: null,
     });
+ 
     const [userInfo, setUserInfo] = useState(null);
     const [allNotes, setAllNotes] = useState([]);
     const navigate = useNavigate();
+
+    // handel edit
+    const handleEditTasks = (noteDetails) => {
+        setOpenAddEdit({isShown: true, type: "edit", data: noteDetails})
+    }
+    
 
     // get user data.
     const getUserInfo = async () => {
@@ -23,7 +33,6 @@ const Home = () => {
             if (response.data && response.data.user) {
                 setUserInfo(response.data.user);
             }
-            console.log(userInfo, "dalds");
         } catch (error) {
             if (error.response.status === 401) {
                 localStorage.clear();
@@ -42,9 +51,51 @@ const Home = () => {
         } catch (error) {console.log(error)}
     };
 
+    // delette tasks.
+    const deleteTask = async (data) => {
+        const taskId = data?._id;
+        try {
+            const response = await axiosInstance.delete("/api/v1/auth/delete-notes/" + taskId);
+
+            if(response.data && !response.data.error) {
+                getAllTasks()
+            }
+
+        } catch (error) {
+            if(error.response && error.response.data && error.response.data.message) {
+                console.log(error.response.data.message)
+            }
+        }
+    }
+
+    // update is pinned: 
+    const updateIsPinned = async (data) => {
+        console.log(data, "pinned")
+        const taskId = data?._id;
+        try {
+            const response = await axiosInstance.put("/api/v1/auth/pinned-update/" + taskId, {
+               isPinned: !data?.isPinned,
+            });
+
+            if(response.data && response.data.note) {
+                getAllTasks()
+            }
+
+        } catch (error) {
+            if(error.response && error.response.data && error.response.data.message) {
+                console.log(error.response.data.message)
+            }
+        }
+    }
+
     useEffect(() => {
+        
         getUserInfo();
         getAllTasks();
+        deleteTask();
+        updateIsPinned();
+        console.log(userInfo, "user data");
+        console.log(openAddEdit.data, "noteData");
         return () => {};
     }, []);
 
@@ -52,6 +103,7 @@ const Home = () => {
         <>
             <Navbar userInfo={userInfo} />
             <div className='container mx-auto'>
+                {allNotes.length > 0 ?  (
                 <div className='grid grid-cols-3 gap-4 mt-8'>
                     {allNotes.map((item, index) => (
                         <NoteCard
@@ -60,12 +112,15 @@ const Home = () => {
                             date={item.createdOn}
                             content={item.content}
                             isPinned={item.isPinned}
-                            onEdit={() => {}}
-                            onDelete={() => {}}
-                            onPinNote={() => {}}
+                            onEdit={() => handleEditTasks(item)}
+                            onDelete={() => deleteTask(item)}
+                            onPinNote={() => updateIsPinned(item)}
                         />
                     ))}
                 </div>
+                ) : (
+                    <EmptyCard imageSrc={93900} message="thoajdjasdasdkadjasksjdajk" />
+                )}
             </div>
 
             <button
@@ -87,7 +142,7 @@ const Home = () => {
                 contentLabel=''
                 className='w-[40%] max-h-3/4 bg-white rounded-md mx-auto mt-14 p-5'>
                 <AddEditNotes
-                    type={openAddEdit.type}
+                    Type={openAddEdit.type}
                     noteData={openAddEdit.data}
                     onClose={() => {
                         setOpenAddEdit({
@@ -99,6 +154,7 @@ const Home = () => {
                     getAllTasks={getAllTasks}
                 />
             </Modal>
+           
         </>
     );
 };
