@@ -92,12 +92,35 @@ const Home = () => {
         }
     }
 
+ // change status task
+const onChangeStatus = async (note, newStatus) => {
+    const TaskId = note?._id;
+    try {
+        const response = await axiosInstance.put("/api/v1/auth/update-status/" + TaskId, {
+            status: newStatus,
+        });
+
+        if (response.data && !response.data.error) {
+            toast.success("Status Updated Successfully!");
+            getAllTasks(); // Refresh tasks
+        }
+    } catch (error) {
+        if (error.response && error.response.data && error.response.data.message) {
+            console.log(error.response.data.message);
+        }
+    }
+};
+
+    
+
+
     useEffect(() => {
         
         getUserInfo();
         getAllTasks();
         deleteTask();
         updateIsPinned();
+        onChangeStatus();
         console.log(userInfo, "user data");
         console.log(openAddEdit.data, "noteData");
         return () => {};
@@ -116,9 +139,11 @@ const Home = () => {
                             date={item.createdOn}
                             content={item.content}
                             isPinned={item.isPinned}
+                            status={item.status}
                             onEdit={() => handleEditTasks(item)}
                             onDelete={() => deleteTask(item)}
                             onPinNote={() => updateIsPinned(item)}
+                            onChangeStatus={(newStatus) => onChangeStatus(item, newStatus)} 
                         />
                     ))}
                 </div>
