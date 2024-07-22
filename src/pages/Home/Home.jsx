@@ -153,7 +153,7 @@ const onChangeStatus = async (note, newStatus) => {
             </div>
 
             <button
-                className='w-16 h-16 flex items-center justify-center rounded-2xl bg-green-600 hover:bg-green-400 absolute right-10 bottom-9'
+                className='w-16 h-16 flex items-center justify-center rounded-2xl bg-green-600 hover:bg-green-400 fixed right-10 bottom-9'
                 onClick={() => {
                     setOpenAddEdit({ isShown: true, type: "add", data: null });
                 }}>
