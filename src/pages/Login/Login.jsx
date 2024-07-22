@@ -5,6 +5,7 @@ import { validateEmail } from "../../utils/helper";
 import axiosInstance from "../../utils/axiosInstance";
 import { useNavigate } from "react-router-dom";
 import Navbar from '../../components/NavBar/Navbar';
+import { toast } from 'react-toastify';
 
 const Login = () => {
     const [showPassword, setShowPassword] = useState(false);
@@ -38,10 +39,12 @@ const Login = () => {
             });
 
             if(response.data && response.data.accessToken) {
-                localStorage.setItem("token", response.data.accessToken)
+                localStorage.setItem("token", response.data.accessToken);
+                toast.success("Login Successful!");
                 navigate("/dashboard")
             }
         } catch (error) {
+            toast.error("Error in login");
             if(error.error && error.response.data && error.response.data.message) {
                 setError("An unexpected error occurred. Please try again.")
             }

@@ -4,6 +4,7 @@ import { FaRegEye, FaRegEyeSlash } from "react-icons/fa6";
 import { validateEmail } from "../../utils/helper";
 import Navbar from '../../components/NavBar/Navbar';
 import axiosInstance from "../../utils/axiosInstance";
+import { toast } from 'react-toastify';
 
 const Signup = () => {
     const [showPassword, setShowPassword] = useState(false);
@@ -44,13 +45,16 @@ const Signup = () => {
             });
 
             if(response.data && response.data.error) {
+                toast.error("Error in Register user.")
                 setError(response.data.message);
                 return;
             } else {
+                toast.success("Register Successful!");
                 navigate("/login")
             }
             
         } catch (error) {
+            toast.error("Error in Register user.")
             if(error.error && error.response.data && error.response.data.message) {
                 setError("An unexpected error occurred. Please try again.")
             }

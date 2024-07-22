@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { MdClose } from "react-icons/md";
 import axiosInstance from "../../utils/axiosInstance";
+import { toast } from 'react-toastify';
 
 const AddEditNotes = ({ noteData, Type, getAllTasks, onClose}) => {
     const [title, setTitle] = useState(noteData?.title || "");
@@ -18,6 +19,7 @@ const AddEditNotes = ({ noteData, Type, getAllTasks, onClose}) => {
             });
 
             if(response.data && response.data.note) {
+                toast.success("Task added successfully!")
                 getAllTasks()
                 onClose()
             }
@@ -39,6 +41,7 @@ const AddEditNotes = ({ noteData, Type, getAllTasks, onClose}) => {
             });
 
             if(response.data && response.data.note) {
+                toast.success("Update Task successfully!")
                 getAllTasks()
                 onClose()
             }

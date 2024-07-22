@@ -8,6 +8,7 @@ import axiosInstance from "../../utils/axiosInstance";
 import Navbar from "../../components/NavBar/Navbar";
 import EmptyCard from "../../components/EmptyCard/EmptyCard";
 import emptyImage from "../../assets/images/empty to list.gif"
+import { toast } from 'react-toastify';
 
 
 const Home = () => {
@@ -59,6 +60,7 @@ const Home = () => {
             const response = await axiosInstance.delete("/api/v1/auth/delete-notes/" + taskId);
 
             if(response.data && !response.data.error) {
+                toast.success("Task Deleted Successfuly!");
                 getAllTasks()
             }
 
@@ -79,6 +81,7 @@ const Home = () => {
             });
 
             if(response.data && response.data.note) {
+                toast.success("Task Pinned Successful!");
                 getAllTasks()
             }
 

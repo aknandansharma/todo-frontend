@@ -1,11 +1,13 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import ProfileInfo from "../cards/ProfileInfo";
+import { toast } from 'react-toastify';
 
 const Navbar = ({ userInfo }) => {
     const navigate = useNavigate();
 
     const userLogout = () => {
+        toast.success("Logout Successful!");
         localStorage.clear();
         navigate("/login");
     };
