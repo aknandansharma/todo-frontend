@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { MdOutlinePushPin } from 'react-icons/md'
 import { MdCreate, MdDelete } from 'react-icons/md'
 
-const NoteCard = ({title, date, content, isPinned, onEdit, onDelete, onPinNote, status, onChangeStatus }) => {
+const NoteCard = ({ title, date, content, isPinned, onEdit, onDelete, onPinNote, status, onChangeStatus }) => {
   const [currentStatus, setCurrentStatus] = useState(status);
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
@@ -11,11 +11,15 @@ const NoteCard = ({title, date, content, isPinned, onEdit, onDelete, onPinNote, 
     setCurrentStatus(newStatus);
     if (onChangeStatus) onChangeStatus(newStatus); // Pass the new status to the callback
     setDropdownOpen(false);
-};
+  };
 
+  // Determine the background color and blinking effect based on currentStatus
+  const statusColor = currentStatus === 'Todo' ? 'bg-blue-500' :
+                       currentStatus === 'InProgress' ? 'bg-green-500' :
+                       currentStatus === 'Done' ? 'bg-red-500' : '';
 
   return (
-    <div className='border rounded p-4 bg-white hover:shadow-xl transition-all ease-in-out'>
+    <div className={`border rounded p-4 bg-white hover:shadow-xl transition-all ease-in-out ${statusColor} `}>
       <div className='flex items-center justify-between'>
         <div>
           <h6 className='text-sm font-medium '>{title}</h6>
@@ -31,7 +35,7 @@ const NoteCard = ({title, date, content, isPinned, onEdit, onDelete, onPinNote, 
         </div>
         <div className='relative'>
           <button
-            className='text-xs py-1 px-2 rounded border'
+            className={`text-sm py-1 px-2 rounded border ${statusColor}`}
             onClick={() => setDropdownOpen(!dropdownOpen)}
           >
             {currentStatus}
